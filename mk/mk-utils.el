@@ -548,8 +548,10 @@ current major mode, as specified in ‘mk-search-prefix’."
       (dolist (item (cons (f-full user-init-file)
                           (directory-files mk-dir t "\\`[^#].*\\.el\\'" t)))
         (let ((compiled (byte-compile-dest-file item)))
-          (when (or (not (f-file? compiled))
+          (when (or (not (f-exists? compiled))
+                    (not (f-file? compiled))
                     (file-newer-than-file-p item compiled))
+            (message "Trying to compile ‘%s’:" item)
             (byte-compile-file item)
             (setq once t)))))
     (unless once

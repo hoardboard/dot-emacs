@@ -13,8 +13,7 @@ initial_startup = '''
       (user-init-file (expand-file-name "init.el"))
       (load-path (delq default-directory load-path)))
   (load-file user-init-file)
-  (run-hooks (quote after-init-hook))
-  (mk-compile-init-files))
+  (run-hooks (quote after-init-hook)))
 '''
 
 secondary_startup = '''

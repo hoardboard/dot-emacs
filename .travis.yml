@@ -1,21 +1,17 @@
-env:
-  matrix:
-    - EMACS=emacs-snapshot
+language: ruby
 
 before_install:
-  - git submodule --quiet update --init --recursive
+  - git clone https://github.com/rejeep/evm.git $HOME/.evm
+  - export PATH=$HOME/.evm/bin:$PATH
 
-install:
-  - if [ "$EMACS" = 'emacs-snapshot' ]; then
-        sudo add-apt-repository -y ppa:ubuntu-elisp/ppa &&
-        sudo apt-get -qq update &&
-        sudo apt-get -qq -f install &&
-        sudo apt-get -qq install emacs-snapshot &&
-        sudo apt-get -qq install emacs-snapshot-el;
-    fi
+  - evm config path /tmp
+  - evm install $EVM_EMACS --use --skip
+
+env:
+  - EVM_EMACS=emacs-git-snapshot-travis
 
 script:
-  - python test-startup.py
+  lsb_release -a && export HOME=$PWD/.. && ln -s emacs.d ../dot-emacs && python test-startup.py
 
 notifications:
   email: false
